@@ -40,12 +40,19 @@ class SPVAutomatico:
             cond = ' AND rg <> "" '
 
         sql = (
-            "SELECT DISTINCT p.Cod_Cliente, p.Cod_Pesquisa,  e.UF, p.Data_Entrada, coalesce(p.nome_corrigido, p.nome) AS Nome, p.CPF, coalesce(p.rg_corrigido, p.rg) AS RG, p.Nascimento, coalesce(p.mae_corrigido, p.mae) AS Mae, p.anexo AS Anexo, ps.Resultado, ps.cod_spv_tipo FROM pesquisa p INNER JOIN servico s ON p.Cod_Servico = s.Cod_Servico LEFT JOIN lote_pesquisa lp ON p.Cod_Pesquisa = lp.Cod_Pesquisa LEFT JOIN lote l ON l.cod_lote = lp.cod_lote LEFT JOIN estado e ON e.Cod_UF = p.Cod_UF LEFT JOIN pesquisa_spv ps ON ps.Cod_Pesquisa = p.Cod_Pesquisa AND ps.Cod_SPV = 1 AND ps.filtro = "
+            "SELECT "
+            + "sub.Cod_Pesquisa,"
+            + "sub.Nome,"
+            + "sub.CPF,"
+            + "sub.RG,"
+            + "sub.cod_spv_tipo "
+            + "FROM ("
+            + "SELECT DISTINCT p.Cod_Cliente, p.Cod_Pesquisa,  e.UF, p.Data_Entrada, coalesce(p.nome_corrigido, p.nome) AS Nome, p.CPF, coalesce(p.rg_corrigido, p.rg) AS RG, p.Nascimento, coalesce(p.mae_corrigido, p.mae) AS Mae, p.anexo AS Anexo, ps.Resultado, ps.cod_spv_tipo FROM pesquisa p INNER JOIN servico s ON p.Cod_Servico = s.Cod_Servico LEFT JOIN lote_pesquisa lp ON p.Cod_Pesquisa = lp.Cod_Pesquisa LEFT JOIN lote l ON l.cod_lote = lp.cod_lote LEFT JOIN estado e ON e.Cod_UF = p.Cod_UF LEFT JOIN pesquisa_spv ps ON ps.Cod_Pesquisa = p.Cod_Pesquisa AND ps.Cod_SPV = 1 AND ps.filtro = "
             + str(filtro)
             + ' WHERE p.Data_Conclusao IS NULL  AND ps.resultado IS NULL   AND p.tipo = 0   AND p.cpf <> "" '
             + cond
             + ' AND (e.UF = "SP" OR p.Cod_UF_Nascimento = 26  OR p.Cod_UF_RG = 26) GROUP BY p.cod_pesquisa ORDER BY nome ASC, resultado DESC '
-            + f"LIMIT {limite} OFFSET {offset}"
+            + f"LIMIT {limite} OFFSET {offset}) AS sub"
         )
 
         cursor.execute(sql)
@@ -69,11 +76,11 @@ class SPVAutomatico:
         if totPesquisas > 0:
 
             for dados in tqdm(qry):
-                codPesquisa = dados[1]
-                nome = dados[4]
-                cpf = dados[5]
-                rg = dados[6]
-                spvTipo = dados[11]
+                codPesquisa = dados[0]
+                nome = dados[1]
+                cpf = dados[2]
+                rg = dados[3]
+                spvTipo = dados[4]
 
                 self.executaPesquisa(self, filtro, nome, cpf, rg, codPesquisa, spvTipo)
                 tempo_fim = datetime.datetime.now()
@@ -118,8 +125,8 @@ class SPVAutomatico:
                 + ", -1, "
                 + str(filtro)
                 + ", "
-                + str(self.platforma.website_id) +
-                ")"
+                + str(self.platforma.website_id)
+                + ")"
             )
 
         elif filtro in [1, 3] and rg != None and rg != "":
@@ -133,8 +140,8 @@ class SPVAutomatico:
                 + ", -1, "
                 + str(filtro)
                 + ", "
-                + str(self.platforma.website_id) +
-                ")"
+                + str(self.platforma.website_id)
+                + ")"
             )
 
         elif filtro == 2 and nome != None and nome != "":
@@ -148,8 +155,8 @@ class SPVAutomatico:
                 + ", -1, "
                 + str(filtro)
                 + ", "
-                + str(self.platforma.website_id) +
-                ")"
+                + str(self.platforma.website_id)
+                + ")"
             )
         if self.conn is None:
             self.conn = mariadb.connect(
