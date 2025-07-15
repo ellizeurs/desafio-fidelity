@@ -15,17 +15,21 @@ cd desafio-fidelity
 cp .env.example .env
 ````
 > O arquivo de exemplo está com as variáveis dadas pelo desafio
-4. Crie e entre no ambiente virtual python (opcional)
+4. Crie o banco de dados (se não existir)
+````bash
+psql -U seu_usuario -d nome_do_banco -f sql/schema.sql
+````
+5. Crie e entre no ambiente virtual python (opcional)
 ````bash
 python -m venv venv
 source venv/bin/activate #Linux
 venv/src/activate # Windows
 ````
-5. Instale as bibliotecas
+6. Instale as bibliotecas
 ````bash
 pip install -r requirements.txt
 ````
-6. Execute a função principal
+7. Execute a função principal
 ````bash
 python src/main.py
 ````
