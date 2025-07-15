@@ -178,7 +178,3 @@ class SPVAutomatico():
         except:
             print('PROGRAMA ENCERRADO')
             quit()
-
-
-p = SPVAutomatico(0)
-p.pesquisa()
