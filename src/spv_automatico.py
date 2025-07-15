@@ -180,45 +180,10 @@ class SPVAutomatico:
     # Esse método tem como função buscar a pesquisa na plataforma online utilizando o Selenoid.
     # Nesse caso a função está aplicando a apenas uma plataforma, mas precisamos que seja modularizado.
     def carregaSite(self, filtro, documento):
-        service = Service(executable_path=EXECUTAVEL + "msedgedriver.exe")
-        options = Options()
-        options.add_argument("-headless")
-        options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        browser = webdriver.Edge(service=service, options=options)
-        browser.get("https://esaj.tjsp.jus.br/cpopg/open.do")
-
-        if filtro == 0 or filtro == 1 or filtro == 3:
-            try:
-                select_el = browser.find_element("xpath", '//*[@id="cbPesquisa"]')
-                select_ob = Select(select_el)
-                select_ob.select_by_value("DOCPARTE")
-                browser.find_element("xpath", '//*[@id="campo_DOCPARTE"]').send_keys(
-                    documento
-                )
-                browser.find_element(
-                    "xpath", '//*[@id="botaoConsultarProcessos"]'
-                ).click()
-            except:
-                time.sleep(120)
-                self.restarta_programa(self)
-        elif filtro == 2:
-            try:
-                select_el = browser.find_element("xpath", '//*[@id="cbPesquisa"]')
-                select_ob = Select(select_el)
-                select_ob.select_by_value("NMPARTE")
-                browser.find_element(
-                    "xpath", '//*[@id="pesquisarPorNomeCompleto"]'
-                ).click()
-                browser.find_element("xpath", '//*[@id="campo_NMPARTE"]').send_keys(
-                    documento
-                )
-                browser.find_element(
-                    "xpath", '//*[@id="botaoConsultarProcessos"]'
-                ).click()
-            except:
-                time.sleep(120)
-                self.restarta_programa(self)
-        return browser.page_source
+        try:
+            return self.plataforma.consultar(documento, filtro)
+        except Exception as e:
+            self.restarta_programa(self)
 
     # Esse método tem como função reiniciar o sistema.
     def restarta_programa(self):
