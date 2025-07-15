@@ -105,7 +105,7 @@ class SPVAutomatico:
 
     # Esse método tem como função realizar todos os passos da pesquisa, após a sua consulta no banco de dados.
     # Com isso é realizada a busca no navegador, a validação do resultado e a inserção do resultado no banco de dados.
-    def executaPesquisa(self, filtro, nome, cpf, rg, codPesquisa, spvTipo):
+    def executaPesquisa(self, filtro, nome, cpf, rg, codPesquisa):
 
         if filtro == 0 and cpf != None:
             site = self.carregaSite(self, filtro, cpf)
@@ -117,7 +117,9 @@ class SPVAutomatico:
                 + str(result)
                 + ", -1, "
                 + str(filtro)
-                + ", 1)"
+                + ", "
+                + str(self.platforma.website_id) +
+                ")"
             )
 
         elif filtro in [1, 3] and rg != None and rg != "":
@@ -130,7 +132,9 @@ class SPVAutomatico:
                 + str(result)
                 + ", -1, "
                 + str(filtro)
-                + ", 1)"
+                + ", "
+                + str(self.platforma.website_id) +
+                ")"
             )
 
         elif filtro == 2 and nome != None and nome != "":
@@ -143,7 +147,9 @@ class SPVAutomatico:
                 + str(result)
                 + ", -1, "
                 + str(filtro)
-                + ", 1)"
+                + ", "
+                + str(self.platforma.website_id) +
+                ")"
             )
         if self.conn is None:
             self.conn = mariadb.connect(
@@ -159,7 +165,7 @@ class SPVAutomatico:
     # Esse método tem como função enquadrar a pesquisa de acordo com o resultado obtido na pesquisa como Nada Consta, Consta
     # Criminal e Consta Cível.
     @staticmethod
-    def checaResultado(site, codPesquisa):
+    def checaResultado(site):
         final_result = 7
         if NADA_CONSTA in site:
             final_result = 1

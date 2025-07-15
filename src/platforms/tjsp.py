@@ -7,6 +7,9 @@ from src.consts import EXECUTAVEL
 
 
 class TJSPConsulta:
+    def __init__(self):
+        self.website_id = 1
+
     def consultar(self, documento, filtro):
         service = Service(executable_path=EXECUTAVEL + "msedgedriver.exe")
         options = Options()
