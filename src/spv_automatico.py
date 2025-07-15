@@ -178,7 +178,6 @@ class SPVAutomatico:
         return final_result
 
     # Esse método tem como função buscar a pesquisa na plataforma online utilizando o Selenoid.
-    # Nesse caso a função está aplicando a apenas uma plataforma, mas precisamos que seja modularizado.
     def carregaSite(self, filtro, documento):
         try:
             return self.plataforma.consultar(documento, filtro)
