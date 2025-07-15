@@ -3,10 +3,6 @@ import mariadb
 import sys
 import os
 import time
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.chrome.service import Service
-from selenium import webdriver
-from selenium.webdriver.edge.options import Options
 from tqdm import tqdm
 from .platforms.tjsp import TJSPConsulta
 
@@ -14,7 +10,6 @@ from src.consts import (
     NADA_CONSTA,
     CONSTA01,
     CONSTA02,
-    EXECUTAVEL,
     DB_HOST,
     DB_USER,
     DB_PASSWORD,
@@ -125,7 +120,7 @@ class SPVAutomatico:
                 + ", 1)"
             )
 
-        elif filtro == 3 or filtro == 1 and rg != None and rg != "":
+        elif filtro in [1, 3] and rg != None and rg != "":
             site = self.carregaSite(self, filtro, rg)
             result = self.checaResultado(site, codPesquisa)
             sql = (
