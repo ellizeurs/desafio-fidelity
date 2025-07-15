@@ -9,6 +9,8 @@ from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 from tqdm import tqdm
 
+from src.consts import NADA_CONSTA, CONSTA01, CONSTA02, EXECUTAVEL, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+
 class SPVAutomatico():
 
     def __init__(self, filtro=''):
@@ -18,7 +20,7 @@ class SPVAutomatico():
     # Esse método deve ser atualizado realizando a consulta utilizando o conceito de paginação.
     @staticmethod
     def conectaBD(filtro):
-            con = mariadb.connect(host='10.0.270.18', user='usr_teste', password='teste', database='db_teste')
+            con = mariadb.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
             cursor = con.cursor()
             cond = ''
             if (filtro == 1 or filtro == 3):
@@ -98,7 +100,7 @@ class SPVAutomatico():
             site = self.carregaSite(self, filtro, cpf)
             result = self.checaResultado(site, codPesquisa)
             sql = 'insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ('+str(codPesquisa)+', 1, 36, NULL, '+str(result)+', -1, '+ str(filtro)+', 1)'
-            con = mariadb.connect(host='10.0.270.18', user='usr_teste', password='teste', database='db_teste')
+            con = mariadb.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
             cursor = con.cursor()
             cursor.execute(sql)
             cursor.close()
@@ -107,7 +109,7 @@ class SPVAutomatico():
             site = self.carregaSite(self, filtro, rg)
             result = self.checaResultado(site, codPesquisa)
             sql = 'insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ('+str(codPesquisa)+', 1, 36, NULL, '+str(result)+', -1, '+ str(filtro)+', 1)'
-            con = mariadb.connect(host='10.0.270.18', user='usr_teste', password='teste', database='db_teste')
+            con = mariadb.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
             cursor = con.cursor()
             cursor.execute(sql)
             cursor.close()
@@ -116,7 +118,7 @@ class SPVAutomatico():
             site = self.carregaSite(self, filtro, nome)
             result = self.checaResultado(site, codPesquisa)
             sql = 'insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ('+str(codPesquisa)+', 1, 36, NULL, '+str(result)+', -1, '+ str(filtro)+', 1)'
-            con = mariadb.connect(host='10.0.270.18', user='usr_teste', password='teste', database='db_teste')
+            con = mariadb.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
             cursor = con.cursor()
             cursor.execute(sql)
             cursor.close()
