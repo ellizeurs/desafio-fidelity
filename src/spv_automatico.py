@@ -9,12 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 from tqdm import tqdm
 
-NADA_CONSTA = 'Não existem informações disponíveis para os parâmetros informados.'
-CONSTA01 = 'Processos encontrados'
-CONSTA02 = 'Audiências'
-FILTRO = 0
-EXECUTAVEL = 'C:/Users/teste/OneDrive/Documentos/'
-
 class SPVAutomatico():
 
     def __init__(self, filtro=''):
