@@ -27,7 +27,6 @@ class SPVAutomatico:
         self.filtro = filtro
 
     # Esse método inicia o sistema e consulta as pesquisas que estão em aberto no banco de dados.
-    @staticmethod
     def conectaBD(self, filtro, pagina=0, limite=210):
         if self.conn is None:
             self.conn = mariadb.connect(
@@ -72,17 +71,10 @@ class SPVAutomatico:
         if totPesquisas > 0:
 
             for dados in tqdm(qry):
-                codCliente = dados[0]
                 codPesquisa = dados[1]
-                uf = dados[2]
-                dataEntrada = dados[3]
                 nome = dados[4]
                 cpf = dados[5]
                 rg = dados[6]
-                dataNascimento = dados[7]
-                nomeMae = dados[8]
-                anexo = dados[9]
-                resultado = dados[10]
                 spvTipo = dados[11]
 
                 self.executaPesquisa(self, filtro, nome, cpf, rg, codPesquisa, spvTipo)
