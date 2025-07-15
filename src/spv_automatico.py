@@ -27,9 +27,8 @@ class SPVAutomatico:
         self.filtro = filtro
 
     # Esse método inicia o sistema e consulta as pesquisas que estão em aberto no banco de dados.
-    # Esse método deve ser atualizado realizando a consulta utilizando o conceito de paginação.
     @staticmethod
-    def conectaBD(self, filtro):
+    def conectaBD(self, filtro, pagina=0, limite=210):
         if self.conn is None:
             self.conn = mariadb.connect(
                 host=DB_HOST,
@@ -39,6 +38,7 @@ class SPVAutomatico:
             )
         cursor = self.con.cursor()
         cond = ""
+        offset = pagina * limite
         if filtro == 1 or filtro == 3:
             cond = ' AND rg <> "" '
 
@@ -47,7 +47,8 @@ class SPVAutomatico:
             + str(filtro)
             + ' WHERE p.Data_Conclusao IS NULL  AND ps.resultado IS NULL   AND p.tipo = 0   AND p.cpf <> "" '
             + cond
-            + ' AND (e.UF = "SP" OR p.Cod_UF_Nascimento = 26  OR p.Cod_UF_RG = 26) GROUP BY p.cod_pesquisa ORDER BY nome ASC, resultado DESC LIMIT 210'
+            + ' AND (e.UF = "SP" OR p.Cod_UF_Nascimento = 26  OR p.Cod_UF_RG = 26) GROUP BY p.cod_pesquisa ORDER BY nome ASC, resultado DESC '
+            + f"LIMIT {limite} OFFSET {offset}"
         )
 
         cursor.execute(sql)
