@@ -3,8 +3,8 @@
 -- ================================
 CREATE TABLE estado (
   Cod_UF INT PRIMARY KEY,
-  Cod_Fornecedor INT,
-  UF CHAR(2),
+  UF CHAR(2) NOT NULL,
+  Cod_Fornecedor INT, -- verificar criação de entidade
   Nome TEXT
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE servico (
 -- ================================
 CREATE TABLE pesquisa (
   cod_pesquisa INT PRIMARY KEY,
-  cod_cliente INT FOREIGN,
+  cod_cliente INT, -- verificar criação de entidade
   cod_servico INT REFERENCES servico(cod_servico),
   cod_uf INT REFERENCES estado(Cod_UF),
   tipo INT,
@@ -38,7 +38,7 @@ CREATE TABLE pesquisa (
   nascimento DATE,
   mae TEXT,
   mae_corrigido TEXT,
-  anexo TEXT
+  anexo TEXT -- Verificar tipo
 );
 
 -- ================================
@@ -48,9 +48,9 @@ CREATE TABLE lote (
   Cod_Lote INT PRIMARY KEY,
   Cod_Lote_Prazo DATE,
   Data_Criacao TIMESTAMP,
-  Cod_Funcionario INT,
+  Cod_Funcionario INT, -- Verificar entidade
   Tipo TEXT,
-  Prioridade TEXT
+  Prioridade INT
 );
 
 -- ================================
@@ -60,9 +60,9 @@ CREATE TABLE lote_pesquisa (
   Cod_Lote_Pesquisa INT PRIMARY KEY,
   Cod_Lote INT REFERENCES lote(Cod_Lote),
   Cod_Pesquisa INT REFERENCES pesquisa(cod_pesquisa),
-  Cod_Funcionario INT,
+  Cod_Funcionario INT, -- Verificar entidade
   Cod_Funcionario_Conclusao INT,
-  Cod_Fornecedor INT,
+  Cod_Fornecedor INT, -- Verificar entidade
   Data_Entrada TIMESTAMP,
   Data_Conclusao TIMESTAMP,
   Cod_UF INT REFERENCES estado(Cod_UF),
@@ -74,12 +74,12 @@ CREATE TABLE lote_pesquisa (
 -- ================================
 CREATE TABLE pesquisa_spv (
   cod_pesquisa INT REFERENCES pesquisa(cod_pesquisa),
-  cod_spv INT,
-  cod_spv_computador INT,
-  cod_spv_tipo INT,
-  cod_funcionario INT,
-  filtro INT,
-  website_id INT,
+  cod_spv INT, --- verificar entidade
+  cod_spv_computador INT, -- verificar entidade
+  cod_spv_tipo INT, -- verificar entidade
+  cod_funcionario INT, -- verificar entidade
+  filtro TEXT,
+  website_id INT, -- verificar entidade
   resultado INT,
   PRIMARY KEY (cod_pesquisa, cod_spv)
 );
