@@ -230,6 +230,8 @@ class SPVAutomatico:
     @staticmethod
     def restarta_programa(self):
         try:
+            if self.conn:
+                self.conn.close()
             python = sys.executable
             os.execl(python, python, *sys.argv)
         except:
