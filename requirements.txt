@@ -1,3 +1,4 @@
 mariadb
 selenium
 tqdm
+python-dotenv
