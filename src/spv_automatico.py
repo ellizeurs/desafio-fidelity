@@ -8,6 +8,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 from tqdm import tqdm
+from .platforms.tjsp import TJSPConsulta
 
 from src.consts import (
     NADA_CONSTA,
@@ -23,8 +24,10 @@ from src.consts import (
 
 class SPVAutomatico:
 
-    def __init__(self, filtro=""):
+    def __init__(self, filtro="", platforma=TJSPConsulta()):
         self.filtro = filtro
+        self.conn = None
+        self.platforma = platforma
 
     # Esse método inicia o sistema e consulta as pesquisas que estão em aberto no banco de dados.
     def conectaBD(self, filtro, pagina=0, limite=210):
@@ -35,7 +38,7 @@ class SPVAutomatico:
                 password=DB_PASSWORD,
                 database=DB_NAME,
             )
-        cursor = self.con.cursor()
+        cursor = self.conn.cursor()
         cond = ""
         offset = pagina * limite
         if filtro == 1 or filtro == 3:
@@ -107,7 +110,6 @@ class SPVAutomatico:
 
     # Esse método tem como função realizar todos os passos da pesquisa, após a sua consulta no banco de dados.
     # Com isso é realizada a busca no navegador, a validação do resultado e a inserção do resultado no banco de dados.
-    @staticmethod
     def executaPesquisa(self, filtro, nome, cpf, rg, codPesquisa, spvTipo):
 
         if filtro == 0 and cpf != None:
@@ -155,7 +157,7 @@ class SPVAutomatico:
                 password=DB_PASSWORD,
                 database=DB_NAME,
             )
-        cursor = self.con.cursor()
+        cursor = self.conn.cursor()
         cursor.execute(sql)
         cursor.close()
 
@@ -177,7 +179,6 @@ class SPVAutomatico:
 
     # Esse método tem como função buscar a pesquisa na plataforma online utilizando o Selenoid.
     # Nesse caso a função está aplicando a apenas uma plataforma, mas precisamos que seja modularizado.
-    @staticmethod
     def carregaSite(self, filtro, documento):
         service = Service(executable_path=EXECUTAVEL + "msedgedriver.exe")
         options = Options()
@@ -220,7 +221,6 @@ class SPVAutomatico:
         return browser.page_source
 
     # Esse método tem como função reiniciar o sistema.
-    @staticmethod
     def restarta_programa(self):
         try:
             if self.conn:
