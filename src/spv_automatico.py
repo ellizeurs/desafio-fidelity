@@ -117,47 +117,24 @@ class SPVAutomatico:
         if filtro == 0 and cpf != None:
             site = self.carregaSite(self, filtro, cpf)
             result = self.checaResultado(site, codPesquisa)
-            sql = (
-                "insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ("
-                + str(codPesquisa)
-                + ", 1, 36, NULL, "
-                + str(result)
-                + ", -1, "
-                + str(filtro)
-                + ", "
-                + str(self.platforma.website_id)
-                + ")"
-            )
-
         elif filtro in [1, 3] and rg != None and rg != "":
             site = self.carregaSite(self, filtro, rg)
             result = self.checaResultado(site, codPesquisa)
-            sql = (
-                "insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ("
-                + str(codPesquisa)
-                + ", 1, 36, NULL, "
-                + str(result)
-                + ", -1, "
-                + str(filtro)
-                + ", "
-                + str(self.platforma.website_id)
-                + ")"
-            )
 
         elif filtro == 2 and nome != None and nome != "":
             site = self.carregaSite(self, filtro, nome)
             result = self.checaResultado(site, codPesquisa)
-            sql = (
-                "insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ("
-                + str(codPesquisa)
-                + ", 1, 36, NULL, "
-                + str(result)
-                + ", -1, "
-                + str(filtro)
-                + ", "
-                + str(self.platforma.website_id)
-                + ")"
-            )
+        sql = (
+            "insert into pesquisa_spv (Cod_Pesquisa, Cod_SPV, Cod_spv_computador, Cod_Spv_Tipo, Resultado, Cod_Funcionario, filtro, website_id) values ("
+            + str(codPesquisa)
+            + ", 1, 36, NULL, "
+            + str(result)
+            + ", -1, "
+            + str(filtro)
+            + ", "
+            + str(self.platforma.website_id)
+            + ")"
+        )
         if self.conn is None:
             self.conn = mariadb.connect(
                 host=DB_HOST,
