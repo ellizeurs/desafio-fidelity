@@ -130,7 +130,7 @@ class SPVAutomatico():
         final_result = 7
         if (NADA_CONSTA in site):
             final_result = 1
-        elif ((CONSTA01 in site) or (CONSTA02 in site)) and \ ('Criminal' in site) or ('criminal' in site):
+        elif ((CONSTA01 in site) or (CONSTA02 in site)) and (('Criminal' in site) or ('criminal' in site)):
             final_result = 2
         elif ((CONSTA01 in site) or (CONSTA02 in site)):
             final_result = 5
